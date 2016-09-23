@@ -8,6 +8,7 @@ const port = 1337;
 
 const omikuji = require( "./bots/omikuji" );
 const lgtm = require( "./bots/lgtm" );
+const zoi = require( "./bots/zoi" );
 
 app.use( bodyParser.urlencoded( { extended: true } ) );
 
@@ -23,6 +24,13 @@ app.post( "/lgtm", ( req, res ) => {
   console.dir( req.body );
 
   lgtm.run( req, res );
+} );
+
+app.post( "/zoi", ( req, res ) => {
+  console.log( "POST /zoi" );
+  console.dir( req.body );
+
+  zoi.run( req, res );
 } );
 
 app.listen( port );
