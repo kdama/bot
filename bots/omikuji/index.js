@@ -2,27 +2,25 @@
 
 const fs = require( "fs-extra" );
 const path = require( "path" );
-const omikujiPath = path.join( "./data/omikuji.json" );
-const fetchOmikuji = () => {
-  let omikujis = fs.readJsonSync( omikujiPath, { throws: false } );
-  if ( !omikujis ) {
+
+const dataPath = path.join( "./data/omikuji.json" );
+const configPath = path.join( "./bots/omikuji/config.json" );
+
+const fetchData = () => {
+  let data;
+  try {
+    data = fs.readJsonSync( dataPath, { throws: false } );
+  } catch ( e ) {}
+  if ( !data ) {
     console.log( "Cannot read ./data/omikuji.json" );
-    omikujis = [
-      "大吉",
-      "中吉",
-      "小吉",
-      "吉",
-      "末吉",
-      "凶",
-      "大凶",
-      "豚",
-    ]
+    data = fs.readJsonSync( configPath, { throws: false } );
+    fs.outputJsonSync( dataPath, data );
   };
-  return omikujis;
+  return data;
 };
 
 const omikuji = ( userName ) => {
-  let omikujis = fetchOmikuji().omikujis;
+  let omikujis = fetchData().omikujis;
   const result = omikujis[ Math.floor( Math.random() * omikujis.length ) ];
   const message = `${ userName } さんは【${ result }】でした！`;
   return message;
@@ -33,7 +31,7 @@ module.exports = {
     if ( /\s*add\s*'(.*?)'\s*/.test( req.body[ "text" ] ) ) {
       // add omikuji
       const re = /\s*add\s*'(.*?)'\s*/;
-      let data = fetchOmikuji();
+      let data = fetchData();
       const target = req.body[ "text" ].replace( re, "$1" );
       let isExist = false;
 
@@ -52,8 +50,8 @@ module.exports = {
         return;
       }
       data.omikujis.push( target );
-      fs.outputJsonSync( omikujiPath, data );
-      if ( JSON.stringify( fetchOmikuji() ) === JSON.stringify ( data ) ) {
+      fs.outputJsonSync( dataPath, data );
+      if ( JSON.stringify( fetchData() ) === JSON.stringify ( data ) ) {
         res.writeHead( 200, { "Content-Type": "application/json" } );
         res.end( JSON.stringify( {
           "response_type": "in_channel",
@@ -69,7 +67,7 @@ module.exports = {
     } else if ( /\s*add\s*"(.*?)"\s*/.test( req.body[ "text" ] ) ) {
       // add omikuji
       const re = /\s*add\s*"(.*?)"\s*/;
-      let data = fetchOmikuji();
+      let data = fetchData();
       const target = req.body[ "text" ].replace( re, "$1" );
       let isExist = false;
 
@@ -88,8 +86,8 @@ module.exports = {
         return;
       }
       data.omikujis.push( target );
-      fs.outputJsonSync( omikujiPath, data );
-      if ( JSON.stringify( fetchOmikuji() ) === JSON.stringify ( data ) ) {
+      fs.outputJsonSync( dataPath, data );
+      if ( JSON.stringify( fetchData() ) === JSON.stringify ( data ) ) {
         res.writeHead( 200, { "Content-Type": "application/json" } );
         res.end( JSON.stringify( {
           "response_type": "in_channel",
@@ -105,7 +103,7 @@ module.exports = {
     } else if ( /\s*add\s*`(.*?)`\s*/.test( req.body[ "text" ] ) ) {
       // add omikuji
       const re = /\s*add\s*`(.*?)`\s*/;
-      let data = fetchOmikuji();
+      let data = fetchData();
       const target = req.body[ "text" ].replace( re, "$1" );
       let isExist = false;
 
@@ -124,8 +122,8 @@ module.exports = {
         return;
       }
       data.omikujis.push( target );
-      fs.outputJsonSync( omikujiPath, data );
-      if ( JSON.stringify( fetchOmikuji() ) === JSON.stringify ( data ) ) {
+      fs.outputJsonSync( dataPath, data );
+      if ( JSON.stringify( fetchData() ) === JSON.stringify ( data ) ) {
         res.writeHead( 200, { "Content-Type": "application/json" } );
         res.end( JSON.stringify( {
           "response_type": "in_channel",
@@ -141,7 +139,7 @@ module.exports = {
     } else if ( /\s*add\s*([^\s]*?)\s*/.test( req.body[ "text" ] ) ) {
       // add omikuji
       const re = /\s*add\s*([^\s]*?)\s*/;
-      let data = fetchOmikuji();
+      let data = fetchData();
       const target = req.body[ "text" ].replace( re, "$1" );
       let isExist = false;
 
@@ -160,8 +158,8 @@ module.exports = {
         return;
       }
       data.omikujis.push( target );
-      fs.outputJsonSync( omikujiPath, data );
-      if ( JSON.stringify( fetchOmikuji() ) === JSON.stringify ( data ) ) {
+      fs.outputJsonSync( dataPath, data );
+      if ( JSON.stringify( fetchData() ) === JSON.stringify ( data ) ) {
         res.writeHead( 200, { "Content-Type": "application/json" } );
         res.end( JSON.stringify( {
           "response_type": "in_channel",
@@ -176,7 +174,7 @@ module.exports = {
       }
     } else if ( /\s*list\s*/.test( req.body[ "text" ] ) ) {
       // list omikuji
-      let data = fetchOmikuji();
+      let data = fetchData();
       res.writeHead( 200, { "Content-Type": "application/json" } );
       let list = "ただいまのおみくじ:\n\n";
       data.omikujis.forEach( omikuji => {
