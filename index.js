@@ -4,7 +4,7 @@ const express = require( "express" );
 const bodyParser = require( "body-parser" );
 
 const app = express();
-const port = 1337;
+const port = process.env.PORT || 1337; // heroku sets process.env.PORT
 
 const omikuji = require( "./bots/omikuji" );
 const lgtm = require( "./bots/lgtm" );
