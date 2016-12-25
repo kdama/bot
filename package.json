@@ -16,5 +16,8 @@
     "request": "^2.72.0"
   },
   "devDependencies": {
+  },
+  "engines": {
+    "node": ">=6"
   }
 }
