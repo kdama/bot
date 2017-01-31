@@ -39,7 +39,9 @@ const tryZoi = () => {
     return !!isSucceeded ? item.text : fault;
   } ).join( "" );
   if ( ideal.map( item => item.text ).join("") === result ) {
-    return ":star2: " + result + " :star2:"
+    const resultWithStar = ":star2: " + result + " :star2:";
+    const zoiImageUrl = "http://blog-imgs-96.fc2.com/y/a/r/yarakan/OuEiea.gif";
+    return resultWithStar + "\n" + zoiImageUrl;
   }
   return result;
 };
