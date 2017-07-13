@@ -3,8 +3,8 @@
 ```sh
 $ git clone https://github.com/kdama/bot
 $ cd bot
-$ npm i
-$ npm start
+$ yarn
+$ yarn start
 ```
 
 ```sh
