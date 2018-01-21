@@ -8,7 +8,7 @@ const omikuji = require( "./bots/omikuji" );
 const lgtm = require( "./bots/lgtm" );
 const lgtmPlain = require( "./bots/lgtm-plain" );
 const zoi = require( "./bots/zoi" );
-const zoi = require( "./bots/poputepikusomikuji" );
+const poputepikusomikuji = require( "./bots/poputepikusomikuji" );
 
 createApp( {
   port,
