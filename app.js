@@ -21,6 +21,12 @@ module.exports = {
 
         bot.run( req, res );
       } );
+      app.get( path, function( req, res ){
+        console.log( `GET ${ path }` );
+        console.dir( req.body );
+
+        bot.run( req, res );
+      } );
     } );
 
     app.listen( port );
